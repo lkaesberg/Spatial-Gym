@@ -1,6 +1,7 @@
 # Spatial-Gym: A Gymnasium Environment for Spatial Reasoning Benchmarking
 
 [![PyPI](https://img.shields.io/pypi/v/Spatial-Gym)](https://pypi.org/project/Spatial-Gym/)
+[![Tests](https://github.com/lkaesberg/Spatial-Gym/actions/workflows/tests.yml/badge.svg)](https://github.com/lkaesberg/Spatial-Gym/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
@@ -223,6 +224,48 @@ Spatial-Gym/
 ├── pyproject.toml         # Package configuration
 └── README.md              # This file
 ```
+
+## Testing
+
+Spatial-Gym includes a comprehensive test suite to ensure environment stability and correctness.
+
+### Running Tests
+
+```bash
+# Install with test dependencies
+pip install -e ".[test]"
+
+# Run all tests
+pytest tests/ -v
+
+# Run specific test categories
+pytest tests/test_environment.py -v       # Environment API tests
+pytest tests/test_random_agent.py -v      # Random agent tests
+pytest tests/test_predefined_paths.py -v  # Path validation tests
+
+# Run with coverage
+pytest tests/ --cov=Spatial_Gym --cov-report=html
+```
+
+### Test Coverage
+
+The test suite includes 43+ tests covering:
+- ✅ Environment initialization and configuration
+- ✅ Gymnasium API compliance
+- ✅ Random agent behavior (stress tests)
+- ✅ Predefined valid and invalid paths
+- ✅ Multi-episode stability
+- ✅ Different observation formats
+- ✅ Rendering modes
+
+### Continuous Integration
+
+Tests automatically run on:
+- Every push and pull request
+- Multiple OS (Ubuntu, macOS)
+- Python versions 3.9, 3.10, 3.11
+
+See [tests/README.md](tests/README.md) for detailed testing documentation.
 
 ## Citation
 
