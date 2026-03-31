@@ -267,31 +267,6 @@ Tests automatically run on:
 
 See [tests/README.md](tests/README.md) for detailed testing documentation.
 
-## Citation
-
-If you use Spatial-Gym in your research, please cite:
-
-```bibtex
-@software{spatial_gym2024,
-  title={Spatial-Gym: A Gymnasium Environment for Spatial Reasoning Benchmarking},
-  author={Kaesberg, Lars Benedikt and Mark, Tobias},
-  year={2024},
-  url={https://github.com/lkaesberg/Spatial-Gym}
-}
-```
-
-For the underlying SPaRC dataset and puzzles:
-
-```bibtex
-@inproceedings{kaesberg2024sparc,
-  title={SPaRC: Spatial Reasoning Challenges for Large Language Models},
-  author={Kaesberg, Lars Benedikt and others},
-  booktitle={Proceedings of ACL},
-  year={2024},
-  url={https://sparc.gipplab.org/}
-}
-```
-
 ## Contributing
 
 We welcome contributions! Please follow these guidelines:
@@ -307,15 +282,7 @@ For bug reports and feature requests, please use the [GitHub issue tracker](http
 
 This project is licensed under the MIT License - see the [LICENCE](LICENCE) file for details.
 
-## Acknowledgments
-
-- **Lars Benedikt Kaesberg** (l.kaesberg@uni-goettingen.de) - Project conception and supervision
-- **Jan Philip Wahle** - Project supervision
-- **Tobias Mark** - Initial implementation and environment design
-- **SPaRC Team** - Original puzzle dataset and framework ([sparc.gipplab.org](https://sparc.gipplab.org/))
-
 ## Contact
 
 For questions, suggestions, or collaboration inquiries, please contact:
-- Lars Benedikt Kaesberg: l.kaesberg@uni-goettingen.de
 - GitHub Issues: https://github.com/lkaesberg/Spatial-Gym/issues
