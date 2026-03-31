@@ -1,0 +1,126 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11']
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+      
+      - name: Run basic environment tests
+        run: |
+          pytest tests/test_environment.py -v --tb=short
+      
+      - name: Run random agent tests
+        run: |
+          pytest tests/test_random_agent.py -v --tb=short
+      
+      - name: Run predefined path tests
+        run: |
+          pytest tests/test_predefined_paths.py -v --tb=short
+      
+      - name: Run all tests with coverage
+        run: |
+          pytest tests/ -v --tb=short --cov=Spatial_Gym --cov-report=term-missing
+      
+      - name: Test package installation
+        run: |
+          pip install -e .
+          python -c "import Spatial_Gym; import gymnasium as gym; env = gym.make('Spatial-Gym'); print('✓ Environment created successfully')"
+  
+  integration-test:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+      
+      - name: Run extended integration test
+        run: |
+          python -c "
+          import gymnasium as gym
+          import Spatial_Gym
+          
+          print('Running integration test with random agent...')
+          env = gym.make('Spatial-Gym', max_steps=100)
+          
+          # Test multiple episodes
+          for episode in range(5):
+              obs, info = env.reset()
+              done = False
+              steps = 0
+              while not done:
+                  action = env.action_space.sample()
+                  obs, reward, terminated, truncated, info = env.step(action)
+                  done = terminated or truncated
+                  steps += 1
+              print(f'Episode {episode + 1}: {steps} steps')
+          
+          env.close()
+          print('✓ Integration test passed')
+          "
+      
+      - name: Test different configurations
+        run: |
+          python -c "
+          import gymnasium as gym
+          import Spatial_Gym
+          
+          configs = [
+              {'observation': 'new', 'render_mode': None},
+              {'observation': 'SPaRC', 'render_mode': None},
+              {'observation': 'new', 'render_mode': 'llm'},
+              {'observation': 'new', 'traceback': True},
+          ]
+          
+          for i, config in enumerate(configs):
+              print(f'Testing configuration {i + 1}: {config}')
+              env = gym.make('Spatial-Gym', max_steps=50, **config)
+              obs, info = env.reset()
+              
+              for _ in range(10):
+                  action = env.action_space.sample()
+                  obs, reward, terminated, truncated, info = env.step(action)
+                  if terminated or truncated:
+                      break
+              
+              env.close()
+              print(f'✓ Configuration {i + 1} passed')
+          
+          print('✓ All configurations tested successfully')
+          "
