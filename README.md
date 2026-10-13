@@ -1,5 +1,6 @@
 # Spatial-Gym: A Gymnasium Environment for Spatial Reasoning Benchmarking
 
+[![arXiv](https://img.shields.io/badge/arXiv-2604.09338-b31b1b.svg)](https://arxiv.org/abs/2604.09338)
 [![PyPI](https://img.shields.io/pypi/v/Spatial-Gym)](https://pypi.org/project/Spatial-Gym/)
 [![Tests](https://github.com/lkaesberg/Spatial-Gym/actions/workflows/tests.yml/badge.svg)](https://github.com/lkaesberg/Spatial-Gym/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -266,6 +267,37 @@ Tests automatically run on:
 - Python versions 3.9, 3.10, 3.11
 
 See [tests/README.md](tests/README.md) for detailed testing documentation.
+
+## Citation
+
+If you use Spatial-Gym, please cite:
+
+```bibtex
+@misc{kaesberg2026spatialgym,
+  title  = {Mind the Gap Between Spatial Reasoning and Acting! Step-by-Step Evaluation of Agents With Spatial-Gym},
+  author = {Kaesberg, Lars Benedikt and Yang, Tianyu and Bauer, Niklas and Ruas, Terry and Wahle, Jan Philip and Gipp, Bela},
+  year   = {2026},
+  eprint = {2604.09338},
+  archivePrefix = {arXiv}
+}
+```
+
+Spatial-Gym is built on the SPaRC puzzles. Please also cite:
+
+```bibtex
+@inproceedings{kaesberg-etal-2025-sparc,
+  title     = "{SP}a{RC}: A Spatial Pathfinding Reasoning Challenge",
+  author    = "Kaesberg, Lars Benedikt and Wahle, Jan Philip and Ruas, Terry and Gipp, Bela",
+  booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
+  month     = nov,
+  year      = "2025",
+  address   = "Suzhou, China",
+  publisher = "Association for Computational Linguistics",
+  url       = "https://aclanthology.org/2025.emnlp-main.526/",
+  doi       = "10.18653/v1/2025.emnlp-main.526",
+  pages     = "10359--10390"
+}
+```
 
 ## Contributing
 
