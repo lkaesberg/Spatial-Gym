@@ -1,4 +1,5 @@
 from enum import Enum
+import copy
 import json
 from collections import Counter, deque
 import gymnasium as gym
@@ -976,7 +977,8 @@ class Spatial_Gym(gym.Env):
         Returns a json string representation of the puzzle in the SPaRC format
         '''
         if self.observation == 'new':
-            return {'base': self.obs_array, 'color': self.color_array, 'additional_info': self.additional_info}
+            # Copies, so callers never share arrays with the env or with earlier observations
+            return copy.deepcopy({'base': self.obs_array, 'color': self.color_array, 'additional_info': self.additional_info})
         
         elif self.observation == 'SPaRC':
             observ = self._build_json_obs()
@@ -1019,7 +1021,8 @@ class Spatial_Gym(gym.Env):
         "rule_status": self.rule_status,
         "Rewards": {"normal_reward": self.normal_reward, "outcome_reward": self.outcome_reward}
         }
-        return info
+        # Copies, so infos from different steps never share objects (agent_location, rule_status)
+        return copy.deepcopy(info)
     
     def _get_legal_actions(self):
         '''
