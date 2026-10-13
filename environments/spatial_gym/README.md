@@ -11,13 +11,15 @@ over standard inference even in the step-by-step setting.
 
 | Setting | Config | What the model does |
 |---|---|---|
-| Step-by-step | default | One move per turn. Each turn shows the step number, the current position, the legal moves and the board with the path so far. The reply must end with `Final: <action>` (0=RIGHT, 1=UP, 2=LEFT, 3=DOWN). |
-| Step-by-step with backtracking | `backtracking=true` | Same, but the model may step back onto the previous cell to undo a move. |
+| Step-by-step | `mode="step"` (default) | One move per turn. Each turn shows the step number, the current position, the legal moves and the board with the path so far. The reply must end with `Final: <action>` (0=RIGHT, 1=UP, 2=LEFT, 3=DOWN). |
+| Step-by-step with backtracking | `mode="step"`, `backtracking=true` | Same, but the model may step back onto the previous cell to undo a move. |
+| One-shot | `mode="one_shot"` | The whole puzzle in one message (the SPaRC prompt). The reply ends with `####` and the full list of `(x, y)` coordinates. |
 
 Options (`--env.taskset.<name>`):
 
-* `backtracking`: `true` or `false`.
-* `max_steps`: move limit per episode, default 100 as in the paper.
+* `mode`: `step` or `one_shot`.
+* `backtracking`: `true` or `false` (step mode only).
+* `max_steps`: move limit per episode, default 100 as in the paper (step mode only).
 * `difficulty`: list of levels 1 to 5, for example `[1]` for the easiest puzzles. Default: all 500 test puzzles.
 * `max_invalid_retries`: how often to ask again when a reply has no action, default 2.
 
@@ -26,8 +28,9 @@ Tasks are ordered round-robin by difficulty level, so `-n 10` gives 2 puzzles pe
 ## Reward
 
 The reward is 1.0 if the final path exactly matches one of the puzzle's stored solutions, and 0.0 otherwise. The
-check is the one Spatial-Gym already uses (`outcome_reward` in `Spatial_Gym.step`). Metrics: `steps`, `reached_end`, `invalid_reply`, `retries`,
-`difficulty`.
+check is the one Spatial-Gym already uses (`outcome_reward` in `Spatial_Gym.step`). In one-shot mode the answer
+is replayed move by move in the same environment. Metrics: `steps`, `reached_end`, `invalid_reply`, `retries`,
+`difficulty` (step mode), and `parsed_path`, `steps`, `difficulty` (one-shot mode).
 
 ## Difference from the paper
 
@@ -43,6 +46,7 @@ uv pip install -e environments/spatial_gym
 vf-eval spatial-gym-env -m <model> --client.base-url <OpenAI-compatible URL> --client.api-key-var <ENV_VAR> \
   -n 20 --env.taskset.difficulty '[1]' --no-push
 vf-eval spatial-gym-env -m <model> ... --env.taskset.backtracking true
+vf-eval spatial-gym-env -m <model> ... --env.taskset.mode one_shot
 ```
 
 ## Citation
