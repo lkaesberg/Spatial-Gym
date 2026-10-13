@@ -206,6 +206,18 @@ model.learn(total_timesteps=1_000_000)
 model.save("spatial_reasoning_agent")
 ```
 
+### Prime Intellect verifiers environment
+
+`environments/spatial_gym/` wraps Spatial-Gym as a [verifiers](https://github.com/PrimeIntellect-ai/verifiers)
+environment for evaluation and RL training. It covers all three settings of the Spatial-Gym paper
+(step-by-step, step-by-step with backtracking, and one-shot). The reward is 1.0 for a correct path and 0.0
+otherwise. See [environments/spatial_gym/README.md](environments/spatial_gym/README.md).
+
+```bash
+uv pip install -e environments/spatial_gym
+vf-eval spatial-gym-env -m <model> --client.base-url <url> --client.api-key-var <ENV_VAR> -n 20 --no-push
+```
+
 ## Repository Structure
 
 ```
