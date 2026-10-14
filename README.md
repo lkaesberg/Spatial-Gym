@@ -315,6 +315,19 @@ Spatial-Gym is built on the SPaRC puzzles. Please also cite:
 }
 ```
 
+If you use the visual scaffolds on the same puzzles, please also cite:
+
+```bibtex
+@misc{kaesberg2026visualprompting,
+  title  = {Is Visual Prompting All You Need? Studying VLM Spatial Reasoning under Progressive Visual Scaffolds},
+  author = {Kaesberg, Lars Benedikt and Yang, Tianyu and Wunderlich, Florian Valentin and Ruas, Terry and Kurzawe, Daniel and Wahle, Jan Philip and Gipp, Bela},
+  year   = {2026},
+  eprint = {2608.21170},
+  archivePrefix = {arXiv},
+  note   = {Accepted at Findings of EMNLP 2026}
+}
+```
+
 ## Related work from our group
 
 | Paper | Venue | Links |
