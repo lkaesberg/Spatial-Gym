@@ -20,6 +20,10 @@ tags:
 
 [Spatial-Gym](https://github.com/lkaesberg/Spatial-Gym) turns the [SPaRC](https://sparc.gipplab.org/) grid puzzles into a step-by-step environment. The agent draws one line from the start node to the exit, one move at a time, and the line has to follow every rule on the board. In the [Spatial-Gym paper](https://arxiv.org/abs/2604.09338), humans solve 98.0% of the test puzzles, and the best model, GPT-OSS 120B, solves 16.0%.
 
+![A SPaRC puzzle solved one move per step in Spatial-Gym](assets/spatial-gym-solve.gif)
+
+*A level-5 puzzle solved move by move: the line starts at the big circle and has to reach the exit at the bottom left while following every rule on the board.*
+
 This folder serves Spatial-Gym through [OpenEnv](https://github.com/meta-pytorch/OpenEnv), so it works with any OpenEnv client or trainer. It uses the same prompts and the same scoring as the paper.
 
 ## One episode
@@ -28,6 +32,10 @@ This folder serves Spatial-Gym through [OpenEnv](https://github.com/meta-pytorch
 - `step(SpatialGymAction(action=...))` makes one move: `0`=RIGHT, `1`=UP, `2`=LEFT, `3`=DOWN. A move that is not legal leaves the line where it is but still counts as a step.
 - The episode ends when the line reaches the exit, when no legal move is left, or after `max_steps` moves.
 - The reward is `1.0` when the episode ends with a line that exactly matches one of the puzzle's stored solutions, and `0.0` otherwise. `metadata["rule_status"]` shows which rules the line meets so far.
+
+![The OpenEnv web playground with a Spatial-Gym puzzle](assets/spatial-gym-playground.png)
+
+*The `/web` playground mid-episode: the board with the line so far, and one button per legal move.*
 
 ## Quick start
 
@@ -77,6 +85,7 @@ with SpatialGymEnv(base_url="http://localhost:8000").sync() as env:
 | `puzzle_id`, `difficulty` | The puzzle and its level |
 | `step` | Moves taken so far |
 | `position` | Current node as `[x, y]` |
+| `path` | The line so far, as `[x, y]` nodes from the start |
 | `legal_actions` | Moves allowed from here |
 | `grid` | Board rows in SPaRC notation; `V` marks visited nodes and `L` the current one |
 | `system_prompt` | Rules and symbol legend from the paper, sent on reset only |
