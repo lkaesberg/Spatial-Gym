@@ -222,6 +222,17 @@ uv pip install -e environments/spatial_gym
 vf-eval spatial-gym-env -m <model> --client.base-url <url> --client.api-key-var <ENV_VAR> -n 20 --no-push
 ```
 
+### OpenEnv environment
+
+`environments/spatial_gym_openenv/` serves Spatial-Gym through [OpenEnv](https://github.com/meta-pytorch/OpenEnv),
+the environment standard from Meta and Hugging Face, as a FastAPI server or a Hugging Face Space. One episode is
+one puzzle, solved one move per step with the paper's prompts, and the reward is 1.0 for a correct path and 0.0
+otherwise. See [environments/spatial_gym_openenv/README.md](environments/spatial_gym_openenv/README.md).
+
+```bash
+cd environments/spatial_gym_openenv && uv run --project . server
+```
+
 ## Repository Structure
 
 ```
@@ -233,6 +244,9 @@ Spatial-Gym/
 │   └── render/            # Rendering modules
 │       ├── human_renderer.py
 │       └── llm_renderer.py
+├── environments/
+│   ├── spatial_gym/         # Prime Intellect verifiers environment
+│   └── spatial_gym_openenv/ # OpenEnv environment (server, client, Dockerfile)
 ├── llm_testing/           # LLM evaluation utilities
 │   ├── llm_host.py        # LLM interaction wrapper
 │   └── parse_logs.py      # Result analysis tools

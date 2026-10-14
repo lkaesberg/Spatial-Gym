@@ -54,6 +54,27 @@ Both branches are pushed to `origin`. No PRs were opened.
   `SpatialGymTaskset(SpatialGymConfig(backtracking=...))`, and both build 500 tasks. The env also works with the
   PyPI release `Spatial-Gym==0.1.1` (checked in a fresh venv), which is what Hub users will install.
 
+## OpenEnv environment (2026-10-14)
+
+`environments/spatial_gym_openenv/` is a hand-written OpenEnv environment, scaffolded with `openenv init`
+(openenv 0.8.0). `openenv import` can wrap verifiers environments now, but it turns them into MCP-style tool
+actions. A native environment keeps Spatial-Gym's own action space: one move per step.
+
+- Same prompts and parser as the verifiers environment (`prompts.py` is a copy of its step parts), same
+  deep-copied env templates, same reward (1.0 only when `outcome_reward == 1`).
+- `reset()` options: `puzzle_id`, `difficulty`, `seed`, `split` (`test` or `train`), `backtracking`,
+  `max_steps` (default 100). Unknown options raise, because the OpenEnv server would otherwise drop them quietly.
+- The package is `spatial_gym_openenv`, not `spatial_gym`: on macOS's case-insensitive file system a
+  `spatial_gym` folder would clash with `Spatial_Gym` in site-packages. `env_name` in `server/app.py` is the
+  same name, because the web UI builds its Quick Start import line from it.
+- The dataset is not pinned to a revision, because `Spatial_Gym.__init__` loads the latest version itself.
+- Checks: 9 pytest tests (gold solutions solve one puzzle per level, wrong lines score 0, backtracking, reset
+  options, independent sessions, a WebSocket end-to-end run). `openenv validate` passes at the static level and
+  against a running server. `openenv build` makes a 1.44 GB image; the container solves a level-5 puzzle in 46
+  moves for reward 1.0 and passes `openenv validate --url`.
+- Publishing needs a Hugging Face write token: `openenv push --repo-id lkaesberg/spatial_gym --exclude .gitignore`
+  from the env folder.
+
 ## Reproduced numbers
 
 `vf-eval` runs on 2026-10-13 with `openai/gpt-oss-120b` through OpenRouter, step-by-step mode, level-1 puzzles
