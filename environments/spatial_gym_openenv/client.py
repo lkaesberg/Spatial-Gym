@@ -11,7 +11,9 @@ except ImportError:
     from models import SpatialGymAction, SpatialGymObservation, SpatialGymState
 
 
-class SpatialGymEnv(EnvClient[SpatialGymAction, SpatialGymObservation, SpatialGymState]):
+class SpatialGymEnv(
+    EnvClient[SpatialGymAction, SpatialGymObservation, SpatialGymState]
+):
     """Connect to a running server, a Docker image or a Hugging Face Space.
 
     >>> with SpatialGymEnv(base_url="http://localhost:8000").sync() as env:
@@ -22,13 +24,19 @@ class SpatialGymEnv(EnvClient[SpatialGymAction, SpatialGymObservation, SpatialGy
     def _step_payload(self, action: SpatialGymAction) -> Dict[str, Any]:
         return {"action": action.action}
 
-    def _parse_result(self, payload: Dict[str, Any]) -> StepResult[SpatialGymObservation]:
+    def _parse_result(
+        self, payload: Dict[str, Any]
+    ) -> StepResult[SpatialGymObservation]:
         fields = dict(payload.get("observation", {}))
         fields["done"] = payload.get("done", False)
         fields["reward"] = payload.get("reward")
         fields["metadata"] = fields.get("metadata") or payload.get("metadata") or {}
         observation = SpatialGymObservation(
-            **{k: v for k, v in fields.items() if k in SpatialGymObservation.model_fields}
+            **{
+                k: v
+                for k, v in fields.items()
+                if k in SpatialGymObservation.model_fields
+            }
         )
         return StepResult(
             observation=observation,

@@ -3,7 +3,7 @@
 import pytest
 from datasets import load_dataset
 from spatial_gym_openenv.models import SpatialGymAction
-from spatial_gym_openenv.prompts import parse_action
+from spatial_gym_openenv.models import parse_action
 from spatial_gym_openenv.server.spatial_gym_environment import SpatialGymEnvironment
 
 MOVES = {(1, 0): 0, (0, -1): 1, (-1, 0): 2, (0, 1): 3}

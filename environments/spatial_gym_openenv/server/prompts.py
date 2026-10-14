@@ -1,12 +1,15 @@
-"""Prompts and the move parser for the Spatial-Gym OpenEnv environment.
+# The prompt strings keep the paper's exact whitespace.
+# ruff: noqa: W291, W293
+
+"""Prompts for the Spatial-Gym environment.
 
 Copied unchanged from the Spatial-Gym verifiers environment
-(environments/spatial_gym/spatial_gym_env/prompts.py), which copies them from the SPaRC
-reference code. So an agent gets the same text the Spatial-Gym paper used.
+(environments/spatial_gym/spatial_gym_env/prompts.py), which copies them from the
+SPaRC reference code. So an agent gets the same text the Spatial-Gym paper used. The move parser is in
+models.py, because clients use it too.
 """
 
 import json
-import re
 from typing import Dict
 
 
@@ -17,7 +20,7 @@ def _get_polyshapes_str(puzzle_data: Dict) -> str:
         polyshapes_str = "POLYSHAPES DEFINITIONS:\n"
         polyshapes_json = json.loads(puzzle_data["polyshapes"])
         for shape_id, shape_def in polyshapes_json.items():
-            shape_def_str = '\n'.join(map(str, shape_def))
+            shape_def_str = "\n".join(map(str, shape_def))
             polyshapes_str += f"Shape {shape_id}:\n{shape_def_str}\n\n"
     return polyshapes_str
 
@@ -25,15 +28,15 @@ def _get_polyshapes_str(puzzle_data: Dict) -> str:
 def step_prompt(puzzle_data: Dict) -> Dict:
     """
     Generate the complete prompt dict for step-by-step gym mode (no traceback).
-    
+
     Args:
         puzzle_data: The puzzle data dictionary
-        
+
     Returns:
         Dict with 'system' and 'user' message content
     """
     polyshapes_str = _get_polyshapes_str(puzzle_data)
-    
+
     system_content = f"""
     You are an autonomous agent controlling a path‐finding puzzle solver.
     Your goal is to find a valid path (a continuous line) from the specified Start Node to the End Node on the provided grid, adhering to all puzzle rules.
@@ -111,22 +114,22 @@ def step_prompt(puzzle_data: Dict) -> Dict:
 
     return {
         "system": system_content,
-        "user": None  # User content is dynamic (observation/info/reward JSON)
+        "user": None,  # User content is dynamic (observation/info/reward JSON)
     }
 
 
 def step_backtrack_prompt(puzzle_data: Dict) -> Dict:
     """
     Generate the complete prompt dict for step-by-step gym mode with traceback.
-    
+
     Args:
         puzzle_data: The puzzle data dictionary
-        
+
     Returns:
         Dict with 'system' and 'user' message content
     """
     polyshapes_str = _get_polyshapes_str(puzzle_data)
-    
+
     system_content = f"""
     You are an autonomous agent controlling a path‐finding puzzle solver.
     Your goal is to find a valid path (a continuous line) from the specified Start Node to the End Node on the provided grid, adhering to all puzzle rules.
@@ -205,43 +208,10 @@ def step_backtrack_prompt(puzzle_data: Dict) -> Dict:
 
     return {
         "system": system_content,
-        "user": None  # User content is dynamic (observation/info/reward JSON)
+        "user": None,  # User content is dynamic (observation/info/reward JSON)
     }
 
 
 # Per-step user message (sparc/process_puzzle.py, process_puzzle_step_by_step).
 # Only change: the f-string expression {step + 1} became the placeholder {step}.
-STEP_USER_TEMPLATE = 'Step: {step}\nCurrent Position: {agent_loc}\nLegal Actions: [{legal_str}]\n\nGrid State:\n{obs_str}\n\nYou MAY think step-by-step, but you MUST end your response with:\nFinal: <action>\nWhere <action> is one of 0=RIGHT, 1=UP, 2=LEFT, 3=DOWN (you may also write the direction name, e.g. Final: right).'
-
-DIRECTION_WORD_TO_ACTION = {'right': 0, 'up': 1, 'left': 2, 'down': 3}
-
-
-def parse_action(reply: str) -> int:
-    """Parse an action from the model's reply.
-
-    Accepted formats (case-insensitive):
-      Final: 2          (digit 0-3)
-      Final: left        (direction word)
-      Final: LEFT        (direction word, any case)
-    Falls back to a bare digit or direction word at the end of the reply.
-    """
-    # Primary: "Final: <digit>" or "Final: <word>"
-    m = re.search(r'Final:\s*([0-3])\b', reply, re.IGNORECASE)
-    if m:
-        return int(m.group(1))
-
-    m = re.search(r'Final:\s*(right|up|left|down)\b', reply, re.IGNORECASE)
-    if m:
-        return DIRECTION_WORD_TO_ACTION[m.group(1).lower()]
-
-    # Fallback: standalone digit 0-3 at the end
-    m = re.search(r'\b([0-3])\s*$', reply)
-    if m:
-        return int(m.group(1))
-
-    # Fallback: standalone direction word at the end
-    m = re.search(r'\b(right|up|left|down)\s*$', reply, re.IGNORECASE)
-    if m:
-        return DIRECTION_WORD_TO_ACTION[m.group(1).lower()]
-
-    raise ValueError(f"Invalid model output, no 'Final: <0-3|right|up|left|down>' found in response: {reply}")
+STEP_USER_TEMPLATE = "Step: {step}\nCurrent Position: {agent_loc}\nLegal Actions: [{legal_str}]\n\nGrid State:\n{obs_str}\n\nYou MAY think step-by-step, but you MUST end your response with:\nFinal: <action>\nWhere <action> is one of 0=RIGHT, 1=UP, 2=LEFT, 3=DOWN (you may also write the direction name, e.g. Final: right)."

@@ -60,7 +60,8 @@ Both branches are pushed to `origin`. No PRs were opened.
 (openenv 0.8.0). `openenv import` can wrap verifiers environments now, but it turns them into MCP-style tool
 actions. A native environment keeps Spatial-Gym's own action space: one move per step.
 
-- Same prompts and parser as the verifiers environment (`prompts.py` is a copy of its step parts), same
+- Same prompts and parser as the verifiers environment (`server/prompts.py` copies its step prompts; the move
+  parser sits in `models.py`, because clients use it too), same
   deep-copied env templates, same reward (1.0 only when `outcome_reward == 1`).
 - `reset()` options: `puzzle_id`, `difficulty`, `seed`, `split` (`test` or `train`), `backtracking`,
   `max_steps` (default 100). Unknown options raise, because the OpenEnv server would otherwise drop them quietly.
@@ -72,8 +73,10 @@ actions. A native environment keeps Spatial-Gym's own action space: one move per
   options, independent sessions, a WebSocket end-to-end run). `openenv validate` passes at the static level and
   against a running server. `openenv build` makes a 1.44 GB image; the container solves a level-5 puzzle in 46
   moves for reward 1.0 and passes `openenv validate --url`.
-- Publishing needs a Hugging Face write token: `openenv push --repo-id lkaesberg/spatial_gym --exclude .gitignore`
-  from the env folder.
+- Hugging Face needs a PRO plan for Docker Spaces on a personal account (402 on `openenv push`), so the env is
+  also proposed to OpenEnv itself as `envs/spatial_gym_env` (huggingface/OpenEnv#1430); merged envs get deployed
+  under the `openenv` org. Both copies have the same code layout: the server's `main()` parses its own
+  arguments, as OpenEnv's `tests/envs/test_server_main_args.py` requires.
 
 ## Reproduced numbers
 

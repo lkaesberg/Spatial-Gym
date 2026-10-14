@@ -28,10 +28,10 @@ import Spatial_Gym  # noqa: F401  (registers the "Spatial-Gym" gymnasium id)
 
 try:
     from ..models import SpatialGymAction, SpatialGymObservation, SpatialGymState
-    from ..prompts import STEP_USER_TEMPLATE, step_backtrack_prompt, step_prompt
+    from .prompts import STEP_USER_TEMPLATE, step_backtrack_prompt, step_prompt
 except ImportError:
     from models import SpatialGymAction, SpatialGymObservation, SpatialGymState
-    from prompts import STEP_USER_TEMPLATE, step_backtrack_prompt, step_prompt
+    from server.prompts import STEP_USER_TEMPLATE, step_backtrack_prompt, step_prompt
 
 DATASET = "lkaesberg/SPaRC"
 SPLITS = ("test", "train")
@@ -94,13 +94,19 @@ def _plain(value: Any) -> Any:
 def _levels(difficulty: Union[int, Sequence[int], None]) -> Optional[set]:
     if difficulty is None:
         return None
-    levels = {int(difficulty)} if isinstance(difficulty, (int, float, str)) else {int(d) for d in difficulty}
+    levels = (
+        {int(difficulty)}
+        if isinstance(difficulty, (int, float, str))
+        else {int(d) for d in difficulty}
+    )
     if not levels or not levels <= {1, 2, 3, 4, 5}:
         raise ValueError(f"difficulty must be levels from 1 to 5, got {difficulty!r}")
     return levels
 
 
-class SpatialGymEnvironment(Environment[SpatialGymAction, SpatialGymObservation, SpatialGymState]):
+class SpatialGymEnvironment(
+    Environment[SpatialGymAction, SpatialGymObservation, SpatialGymState]
+):
     SUPPORTS_CONCURRENT_SESSIONS: bool = True
 
     def __init__(self):
@@ -128,7 +134,9 @@ class SpatialGymEnvironment(Environment[SpatialGymAction, SpatialGymObservation,
             raise ValueError(f"split must be one of {SPLITS}, got {split!r}")
         max_steps = int(max_steps)
         if not 1 <= max_steps <= MAX_STEPS_LIMIT:
-            raise ValueError(f"max_steps must be between 1 and {MAX_STEPS_LIMIT}, got {max_steps}")
+            raise ValueError(
+                f"max_steps must be between 1 and {MAX_STEPS_LIMIT}, got {max_steps}"
+            )
         backtracking = bool(backtracking)
 
         rows = _rows(split)
@@ -139,7 +147,9 @@ class SpatialGymEnvironment(Environment[SpatialGymAction, SpatialGymObservation,
         else:
             levels = _levels(difficulty)
             candidates = sorted(
-                pid for pid, r in rows.items() if levels is None or r["difficulty_level"] in levels
+                pid
+                for pid, r in rows.items()
+                if levels is None or r["difficulty_level"] in levels
             )
             row = rows[random.Random(seed).choice(candidates)]
 
@@ -160,7 +170,9 @@ class SpatialGymEnvironment(Environment[SpatialGymAction, SpatialGymObservation,
             path=self._path(),
             seed=seed,
         )
-        system_prompt = (step_backtrack_prompt if backtracking else step_prompt)(row)["system"]
+        system_prompt = (step_backtrack_prompt if backtracking else step_prompt)(row)[
+            "system"
+        ]
         return self._observation(obs, info, system_prompt=system_prompt)
 
     def step(
@@ -174,7 +186,9 @@ class SpatialGymEnvironment(Environment[SpatialGymAction, SpatialGymObservation,
         self._state.step_count += 1
         self._state.path = self._path()
         self._state.done = bool(terminated or truncated)
-        self._state.solved = self._state.done and self._env.unwrapped.outcome_reward == 1
+        self._state.solved = (
+            self._state.done and self._env.unwrapped.outcome_reward == 1
+        )
         return self._observation(obs, info)
 
     @property
@@ -199,7 +213,9 @@ class SpatialGymEnvironment(Environment[SpatialGymAction, SpatialGymObservation,
     def _path(self) -> List[List[int]]:
         return [[int(x), int(y)] for x, y in self._env.unwrapped.path]
 
-    def _observation(self, obs: str, info: dict, system_prompt: str = "") -> SpatialGymObservation:
+    def _observation(
+        self, obs: str, info: dict, system_prompt: str = ""
+    ) -> SpatialGymObservation:
         inner = self._env.unwrapped
         x, y = (int(v) for v in info["agent_location"])
         legal = [int(a) for a in info["legal_actions"]]
