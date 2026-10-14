@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/lkaesberg/SPaRC/main/logo.png" alt="SPaRC Logo" width="128"/>
+</p>
+
 # Spatial-Gym: A Gymnasium Environment for Spatial Reasoning Benchmarking
 
 [![arXiv](https://img.shields.io/badge/arXiv-2604.09338-b31b1b.svg)](https://arxiv.org/abs/2604.09338)
