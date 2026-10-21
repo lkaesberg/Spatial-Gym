@@ -6,6 +6,7 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-2604.09338-b31b1b.svg)](https://arxiv.org/abs/2604.09338)
 [![PyPI](https://img.shields.io/pypi/v/Spatial-Gym)](https://pypi.org/project/Spatial-Gym/)
+[![Towards Data Science](https://img.shields.io/badge/Towards_Data_Science-article-000000.svg)](https://towardsdatascience.com/spatial-reasoning-in-ai-models-taken-apart/)
 [![Tests](https://github.com/lkaesberg/Spatial-Gym/actions/workflows/tests.yml/badge.svg)](https://github.com/lkaesberg/Spatial-Gym/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
