@@ -1,6 +1,6 @@
 [project]
 name = "spatial-gym-env"
-version = "0.1.0"
+version = "0.1.1"
 description = "SPaRC grid pathfinding puzzles, solved one move per turn (Spatial-Gym) or in one reply."
 requires-python = ">=3.11"
 license = "MIT"
