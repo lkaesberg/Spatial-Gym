@@ -1,0 +1,60 @@
+cff-version: 1.2.0
+message: "If you use Spatial-Gym, please cite the paper below."
+title: "Spatial-Gym"
+type: software
+license: MIT
+authors:
+  - family-names: Kaesberg
+    given-names: Lars Benedikt
+  - family-names: Yang
+    given-names: Tianyu
+  - family-names: Bauer
+    given-names: Niklas
+  - family-names: Ruas
+    given-names: Terry
+  - family-names: Wahle
+    given-names: Jan Philip
+  - family-names: Gipp
+    given-names: Bela
+repository-code: "https://github.com/lkaesberg/Spatial-Gym"
+url: "https://sparc.gipplab.org/"
+keywords:
+  - spatial reasoning
+  - gymnasium
+  - reinforcement learning
+  - large language models
+preferred-citation:
+  type: article
+  title: "Mind the Gap Between Spatial Reasoning and Acting! Step-by-Step Evaluation of Agents With Spatial-Gym"
+  authors:
+    - family-names: Kaesberg
+      given-names: Lars Benedikt
+    - family-names: Yang
+      given-names: Tianyu
+    - family-names: Bauer
+      given-names: Niklas
+    - family-names: Ruas
+      given-names: Terry
+    - family-names: Wahle
+      given-names: Jan Philip
+    - family-names: Gipp
+      given-names: Bela
+  year: 2026
+  journal: "arXiv preprint"
+  doi: "10.48550/arXiv.2604.09338"
+  url: "https://arxiv.org/abs/2604.09338"
+references:
+  - type: conference-paper
+    title: "SPaRC: A Spatial Pathfinding Reasoning Challenge"
+    authors:
+      - family-names: Kaesberg
+        given-names: Lars Benedikt
+      - family-names: Wahle
+        given-names: Jan Philip
+      - family-names: Ruas
+        given-names: Terry
+      - family-names: Gipp
+        given-names: Bela
+    collection-title: "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing"
+    year: 2025
+    doi: "10.18653/v1/2025.emnlp-main.526"

@@ -24,7 +24,7 @@ tags:
 
 *A level-5 puzzle solved move by move: the line starts at the big circle and has to reach the exit at the bottom left while following every rule on the board.*
 
-This folder serves Spatial-Gym through [OpenEnv](https://github.com/meta-pytorch/OpenEnv), so it works with any OpenEnv client or trainer. It uses the same prompts and the same scoring as the paper.
+This folder serves Spatial-Gym through [OpenEnv](https://github.com/meta-pytorch/OpenEnv), so it works with any OpenEnv client or trainer. It uses the paper's prompts and scoring. The polyshape and negative polyshape rules in the prompts are stated the way the puzzles were built, which the paper's prompts worded differently.
 
 ## One episode
 
