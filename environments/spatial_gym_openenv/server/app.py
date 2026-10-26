@@ -14,10 +14,10 @@ from pathlib import Path
 from openenv.core.env_server.http_server import create_app
 
 try:
-    from ..models import SpatialGymAction, SpatialGymObservation
+    from ..models import SpatialGymAction, SpatialGymObservation, SpatialGymState
     from .spatial_gym_environment import SpatialGymEnvironment
 except ImportError:
-    from models import SpatialGymAction, SpatialGymObservation
+    from models import SpatialGymAction, SpatialGymObservation, SpatialGymState
     from server.spatial_gym_environment import SpatialGymEnvironment
 
 
@@ -32,6 +32,7 @@ app = create_app(
     SpatialGymObservation,
     # Also the import name the web UI's Quick Start shows (`from spatial_gym_openenv import ...`).
     env_name="spatial_gym_openenv",
+    state_cls=SpatialGymState,
     max_concurrent_envs=int(os.getenv("MAX_CONCURRENT_ENVS", "8")),
 )
 
