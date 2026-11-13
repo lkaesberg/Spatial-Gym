@@ -74,7 +74,8 @@ actions. A native environment keeps Spatial-Gym's own action space: one move per
   against a running server. `openenv build` makes a 1.44 GB image; the container solves a level-5 puzzle in 46
   moves for reward 1.0 and passes `openenv validate --url`.
 - Hugging Face needs a PRO plan for Docker Spaces on a personal account (402 on `openenv push`), so the env is
-  also proposed to OpenEnv itself as `envs/spatial_gym_env` (huggingface/OpenEnv#1430); merged envs get deployed
+  also proposed to OpenEnv itself as `envs/spatial_gym_env` (openenv/OpenEnv#1430, merged 2026-11-12, typed
+  actions only; maintainers want an issue first before MCP tools are added); merged envs get deployed
   under the `openenv` org. Both copies have the same code layout: the server's `main()` parses its own
   arguments, as OpenEnv's `tests/envs/test_server_main_args.py` requires.
 

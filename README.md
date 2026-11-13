@@ -225,10 +225,17 @@ vf-eval spatial-gym-env -m <model> --client.base-url <url> --client.api-key-var 
 
 ### OpenEnv environment
 
-`environments/spatial_gym_openenv/` serves Spatial-Gym through [OpenEnv](https://github.com/meta-pytorch/OpenEnv),
-the environment standard from Meta and Hugging Face, as a FastAPI server or a Hugging Face Space. One episode is
-one puzzle, solved one move per step with the paper's prompts, and the reward is 1.0 for a correct path and 0.0
-otherwise. See [environments/spatial_gym_openenv/README.md](environments/spatial_gym_openenv/README.md).
+Spatial-Gym is part of [OpenEnv](https://github.com/openenv/OpenEnv), the environment standard from Meta and
+Hugging Face, as [`envs/spatial_gym_env`](https://github.com/openenv/OpenEnv/tree/main/envs/spatial_gym_env).
+One episode is one puzzle, solved one move per step with the paper's prompts, and the reward is 1.0 for a correct
+path and 0.0 otherwise. Install it from OpenEnv:
+
+```bash
+pip install "git+https://github.com/openenv/OpenEnv.git#subdirectory=envs/spatial_gym_env"
+```
+
+This repository also keeps a copy in `environments/spatial_gym_openenv/`, which runs as a FastAPI server or a
+Hugging Face Space. See [environments/spatial_gym_openenv/README.md](environments/spatial_gym_openenv/README.md).
 
 ```bash
 cd environments/spatial_gym_openenv && uv run --project . server
